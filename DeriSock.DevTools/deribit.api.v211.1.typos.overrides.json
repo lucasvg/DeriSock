@@ -1,0 +1,29 @@
+﻿{
+  "methods": {
+    "private/get_affiliate_program_info": {
+      "response": {
+        "objectParams": {
+          "link": {
+            "description": "Affiliate link"
+          }
+        }
+      }
+    },
+    "^private/get_settlement_history_by_(instrument|currency)$": {
+      "response": {
+        "objectParams": {
+          "settlements": {
+            "objectParams": {
+              "session_bankruptcy": {
+                "description": "value of session bankruptcy (in base currency; bankruptcy only)"
+              },
+              "session_tax_rate": {
+                "description": "rate of paid taxes/fees (in base currency; bankruptcy only)"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

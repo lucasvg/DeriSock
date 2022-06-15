@@ -2,6 +2,8 @@
 
 using System;
 
+using DeriSock.Model.Base;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -17,7 +19,7 @@ public class OrderBook
   ///   of [price, amount]	List of asks
   /// </summary>
   [JsonProperty("asks")]
-  public PriceItem[] Asks { get; set; }
+  public PriceAmount[] Asks { get; set; }
 
   /// <summary>
   ///   It represents the requested order size of all best asks
@@ -53,7 +55,7 @@ public class OrderBook
   ///   of [price, amount]	List of bids
   /// </summary>
   [JsonProperty("bids")]
-  public PriceItem[] Bids { get; set; }
+  public PriceAmount[] Bids { get; set; }
 
   /// <summary>
   ///   Current funding (perpetual only)
@@ -174,34 +176,4 @@ public class OrderBook
   /// </summary>
   [JsonProperty("underlying_price")]
   public decimal UnderlyingPrice { get; set; }
-
-  [JsonConverter(typeof(PriceItemConverter))]
-  public class PriceItem
-  {
-    public decimal Price { get; set; }
-    public decimal Amount { get; set; }
-  }
-
-  public class PriceItemConverter : JsonConverter<PriceItem>
-  {
-    public override bool CanWrite => false;
-
-    public override void WriteJson(JsonWriter writer, PriceItem value, JsonSerializer serializer)
-    {
-      throw new NotSupportedException();
-    }
-
-    public override PriceItem ReadJson(
-      JsonReader reader, Type objectType,
-      PriceItem existingValue, bool hasExistingValue,
-      JsonSerializer serializer)
-    {
-      var arr = JArray.Load(reader);
-
-      return new PriceItem
-      {
-        Price = arr[0].Value<decimal>(), Amount = arr[1].Value<decimal>()
-      };
-    }
-  }
 }

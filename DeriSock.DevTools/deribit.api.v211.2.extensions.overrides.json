@@ -1,0 +1,118 @@
+﻿{
+  "methods": {
+    "public/test": {
+      "params": {
+        "expected_result": {
+          "enum": [ "", "exception" ]
+        }
+      }
+    },
+    "[^/]+/subscribe": {
+      "params": {
+        "channels": {
+          "arrayType": "string"
+        }
+      }
+    },
+    "[^/]*/unsubscribe": {
+      "params": {
+        "channels": {
+          "arrayType": "string"
+        }
+      }
+    },
+    "public/get_announcements": {
+      "params": {
+        "count": {
+          "default": 5
+        }
+      }
+    },
+    "private/change_api_key_name": {
+      "params": {
+        "name": {
+          "maxLength": 16
+        }
+      }
+    },
+    "private/create_api_key": {
+      "params": {
+        "name": {
+          "maxLength": 16
+        }
+      }
+    },
+    "private/get_positions": {
+      "params": {
+        "currency": {
+          "description": "The currency symbol"
+        }
+      }
+    },
+    "private/buy": {
+      "params": {
+        "label": {
+          "maxLength": 64
+        },
+        "time_in_force": {
+          "default": "good_til_cancelled"
+        }
+      }
+    },
+    "private/sell": {
+      "params": {
+        "label": {
+          "maxLength": 64
+        },
+        "time_in_force": {
+          "default": "good_til_cancelled"
+        }
+      }
+    },
+    "private/edit_by_label": {
+      "params": {
+        "label": {
+          "maxLength": 64
+        }
+      }
+    },
+    "private/cancel_by_label": {
+      "params": {
+        "label": {
+          "maxLength": 64
+        }
+      }
+    },
+    "private/get_order_margin_by_ids": {
+      "params": {
+        "ids": {
+          "arrayType": "string"
+        }
+      }
+    },
+    "public/status": {
+      "response": {
+        "objectParams": {
+          "locked_currencies": {
+            "arrayType": "string"
+          }
+        }
+      }
+    },
+    "public/get_mark_price_history": {
+      "response": {
+        "type": "array",
+        "arrayType": "[timestamp, value]"
+      }
+    },
+    "private/get_subaccounts_details": {
+      "response": {
+        "objectParams": {
+          "open_orders": {
+            "optional": true
+          }
+        }
+      }
+    }
+  }
+}

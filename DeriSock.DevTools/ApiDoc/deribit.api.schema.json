@@ -1,0 +1,192 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "$id": "https://raw.githubusercontent.com/psollberger/DeriSock/main/DeriSock.DevTools/ApiSchema/deribit.api.schema.json",
+  "title": "JSON Schema for a Deribit API file format",
+  "type": "object",
+  "definitions": {
+    "dataType": {
+      "type": "string",
+      "enum": [ "number", "float", "long", "integer", "boolean", "string", "object", "array", "objectArray" ]
+    },
+    "arrayDataType": {
+      "type": "string",
+      "enum": [ "number", "float", "integer", "boolean", "string", "object" ]
+    },
+    "managedTypeData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "name" ],
+      "properties": {
+        "name": { "type": "string" },
+        "implements": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "parameterData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "required", "type", "description" ],
+      "properties": {
+        "required": { "type": "boolean" },
+        "type": { "$ref": "#/definitions/dataType" },
+        "arrayType": { "$ref": "#/definitions/arrayDataType" },
+        "enum": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "default": {
+          "type": [ "number", "integer", "boolean", "string" ]
+        },
+        "maxLength": { "type": "integer" },
+        "description": { "type": "string" },
+        "objectArrayParams": {
+          "patternProperties": {
+            "^[a-z_]+$": { "$ref": "#/definitions/parameterData" }
+          }
+        }
+      }
+    },
+    "responseParameterData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "type", "description" ],
+      "properties": {
+        "type": { "$ref": "#/definitions/dataType" },
+        "arrayType": {
+          "anyOf": [
+            { "$ref": "#/definitions/arrayDataType" },
+            {
+              "type": "string",
+              "enum": [ "[price, amount]", "[action, price, amount]" ]
+            }
+          ]
+        },
+        "description": { "type": "string" },
+        "deprecated": { "type": "boolean" },
+        "optional": { "type": "boolean" },
+        "managedType": { "$ref": "#/definitions/managedTypeData" },
+        "objectParams": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/responseParameterData" }
+        }
+      }
+    },
+    "responseData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "type" ],
+      "properties": {
+        "type": { "$ref": "#/definitions/dataType" },
+        "arrayType": {
+          "anyOf": [
+            { "$ref": "#/definitions/arrayDataType" },
+            {
+              "type": "string",
+              "enum": [ "[timestamp, value]" ]
+            }
+          ]
+        },
+        "description": { "type": "string" },
+        "managedType": { "$ref": "#/definitions/managedTypeData" },
+        "objectParams": {
+          "type": "object",
+          "items": { "$ref": "#/definitions/responseParameterData" }
+        }
+      }
+    }
+  },
+  "patternProperties": {
+    "^\\$schema$": {
+      "type": "string"
+    }
+  },
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The version of the Deribit API Specification (e.g. 2.1.1)"
+    },
+    "endpoints": {
+      "type": "object",
+      "description": "An object containing the endpoints hosting the API",
+      "properties": {
+        "production": {
+          "type": "string",
+          "description": "The WebSocket URI to the production system"
+        },
+        "testnet": {
+          "type": "string",
+          "description": "The WebSocket URI to the testnet system"
+        }
+      },
+      "additionalProperties": false,
+      "required": [ "production", "testnet" ]
+    },
+    "methods": {
+      "type": "object",
+      "description": "A list of methods the API provides",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^((public|private)/[a-z_]+)$": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [ "category", "description" ],
+          "properties": {
+            "category": {
+              "type": "string",
+              "enum": [
+                "Authentication",
+                "Session management",
+                "Supporting",
+                "Subscription management",
+                "Account management",
+                "Block Trade",
+                "Trading",
+                "Market data",
+                "Wallet"
+              ]
+            },
+            "description": {
+              "type": "string"
+            },
+            "deprecated": {
+              "type": "boolean",
+              "default": false
+            },
+            "params": {
+              "patternProperties": {
+                "^[a-z_]+$": { "$ref": "#/definitions/parameterData" }
+              }
+            },
+            "response": { "$ref": "#/definitions/responseData" }
+          }
+        }
+      }
+    },
+    "subscriptions": {
+      "type": "object",
+      "description": "A list of subscriptions the API provides",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z_.{}]+$": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [ "description" ],
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "params": {
+              "type": "object",
+              "items": { "$ref": "#/definitions/parameterData" }
+            },
+            "response": { "$ref": "#/definitions/responseData" }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [ "version", "endpoints", "methods", "subscriptions" ]
+}

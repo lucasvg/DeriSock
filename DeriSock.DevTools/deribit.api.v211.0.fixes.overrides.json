@@ -1,0 +1,49 @@
+﻿{
+  "methods": {
+    ".+": {
+      "response": {
+        "objectParams": {
+          "acccess_token": {
+            "name": "access_token"
+          },
+          ".+": {
+            "objectParams": {
+              "session_bankrupcy": {
+                "name": "session_bankruptcy"
+              }
+            }
+          }
+        }
+      }
+    },
+    "^public/(get_order_book|get_order_book_by_instrument_id|ticker)$": {
+      "response": {
+        "objectParams": {
+          "underlying_index": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "subscriptions": {
+    "incremental_ticker.{instrument_name}": {
+      "response": {
+        "objectParams": {
+          "underlying_index": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ticker.{instrument_name}.{interval}": {
+      "response": {
+        "objectParams": {
+          "underlying_index": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

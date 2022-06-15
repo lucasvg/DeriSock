@@ -1,0 +1,181 @@
+﻿{
+  "methods": {
+    "private/get_account_summary": {
+      "response": {
+        "managedType": { "name": "AccountSummary" },
+        "objectParams": {
+          "limits": {
+            "managedType": { "name": "AccountLimits" },
+            "objectParams": {
+              "futures": {
+                "managedType": {
+                  "name": "FuturesLimits",
+                  "implements": [ "IAccountRequestLimit" ]
+                }
+              },
+              "matching_engine": {
+                "managedType": {
+                  "name": "MatchingEngineLimits",
+                  "implements": [ "IAccountRequestLimit" ]
+                }
+              },
+              "non_matching_engine": {
+                "managedType": {
+                  "name": "NonMatchingEngineLimits",
+                  "implements": [ "IAccountRequestLimit" ]
+                }
+              },
+              "options": {
+                "managedType": {
+                  "name": "OptionsLimits",
+                  "implements": [ "IAccountRequestLimit" ]
+                }
+              },
+              "perpetuals": {
+                "managedType": {
+                  "name": "PerpetualLimits",
+                  "implements": [ "IAccountRequestLimit" ]
+                }
+              }
+            }
+          },
+          "fees": {
+            "managedType": { "name": "AccountFees" }
+          }
+        }
+      }
+    },
+    "^private/(create_subaccount|get_subaccounts)$": {
+      "response": {
+        "objectParams": {
+          "portfolio": {
+            "managedType": { "name": "SubAccountPortfolios" },
+            "objectParams": {
+              "btc": {
+                "managedType": { "name": "SubAccountPortfolio" }
+              },
+              "eth": {
+                "managedType": { "name": "SubAccountPortfolio" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "private/get_subaccounts_details": {
+      "response": {
+        "objectParams": {
+          "open_orders": {
+            "managedType": { "name": "UserOrder" }
+          },
+          "positions": {
+            "managedType": { "name": "UserPosition" }
+          }
+        }
+      }
+    },
+    "private/get_affiliate_program_info": {
+      "response": {
+        "objectParams": {
+          "received": {
+            "managedType": { "name": "AffiliatePayout" }
+          }
+        }
+      }
+    },
+    "private/get_transaction_log": {
+      "response": {
+        "objectParams": {
+          "logs": {
+            "managedType": { "name": "TransactionLogEntry" },
+            "objectParams": {
+              "info": {
+                "managedType": { "name": "JObject" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "private/execute_block_trade": {
+      "params": {
+        "trades": {
+          "managedType": { "name": "BlockTrade" }
+        }
+      },
+      "response": {
+        "objectParams": {
+          "trades": {
+            "managedType": { "name": "UserTrade" }
+          }
+        }
+      }
+    },
+    "private/get_block_trade": {
+      "response": {
+        "objectParams": {
+          "trades": {
+            "managedType": { "name": "UserTrade" }
+          }
+        }
+      }
+    },
+    "^private/(buy|sell|edit|edit_by_label|close_position)$": {
+      "response": {
+        "objectParams": {
+          "order": {
+            "managedType": { "name": "UserOrder" }
+          },
+          "trades": {
+            "managedType": { "name": "UserTrade" }
+          }
+        }
+      }
+    },
+    "private/get_last_block_trades_by_currency": {
+      "response": {
+        "objectParams": {
+          "trades": {
+            "managedType": { "name": "UserTrade" }
+          }
+        }
+      }
+    },
+    "private/move_positions": {
+      "response": {
+        "objectParams": {
+          "trades": {
+            "managedType": { "name": "MovedTrade" }
+          }
+        }
+      }
+    },
+    "private/get_trigger_order_history": {
+      "response": {
+        "objectParams": {
+          "entries": {
+            "managedType": { "name": "UserTriggerOrder" }
+          }
+        }
+      }
+    },
+    "^private/get_user_trades_by_(currency|currency_and_time|instrument|instrument_and_time)$": {
+      "response": {
+        "objectParams": {
+          "trades": {
+            "managedType": { "name": "UserTrade" }
+          }
+        }
+      }
+    },
+    "^private/get_settlement_history_by_(instrument|currency)$": {
+      "response": {
+        "objectParams": {
+          "settlements": {
+            "managedType": { "name": "UserSettlement" }
+          }
+        }
+      }
+    }
+  }
+}
